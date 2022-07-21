@@ -1,8 +1,9 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+let selecteddDate = null;
 
 const onClose = selectedDates => {
-  console.log(selectedDates[0]);
+  selecteddDate = selectedDates[0];
 };
 
 const options = {
@@ -13,4 +14,12 @@ const options = {
   onClose,
 };
 
+const btnStartEl = document.querySelector('[data-start]');
+
+const onStart = () => {
+  const curentDate = new Date();
+  console.log(curentDate < selecteddDate);
+};
+
 const flackpicr = flatpickr('#datetime-picker', options);
+btnStartEl.addEventListener('click', onStart);
