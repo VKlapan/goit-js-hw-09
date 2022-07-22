@@ -1,9 +1,28 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-let selecteddDate = null;
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
+let selectedDate = null;
+let curentDate = null;
+let intervalId = null;
+
+const btnStartEl = document.querySelector('[data-start]');
+btnStartEl.setAttribute('disabled', '');
+
+const daysEl = document.querySelector('[data-days]');
+const hoursEl = document.querySelector('[data-hours]');
+const minutesEl = document.querySelector('[data-minutes]');
+const secondsEl = document.querySelector('[data-seconds]');
 
 const onClose = selectedDates => {
-  selecteddDate = selectedDates[0];
+  curentDate = new Date();
+  selectedDate = selectedDates[0];
+  if (curentDate > selectedDate) {
+    Notify.warning('Please choose a date in the future.');
+    //    window.alert('ALERT');
+    return;
+  }
+  btnStartEl.removeAttribute('disabled');
 };
 
 const options = {
@@ -14,12 +33,55 @@ const options = {
   onClose,
 };
 
-const btnStartEl = document.querySelector('[data-start]');
+const flackpicr = flatpickr('#datetime-picker', options);
 
-const onStart = () => {
-  const curentDate = new Date();
-  console.log(curentDate < selecteddDate);
+const startCountdown = () => {
+  btnStartEl.setAttribute('disabled', '');
+  let currentTime = null;
+  let countDown = null;
+  const stopTime = selectedDate.getTime();
+
+  intervalId = setInterval(() => {
+    currentTime = Date.now();
+    if (stopTime < currentTime) {
+      stopCountdown();
+      return;
+    }
+    countDown = convertMs(stopTime - currentTime);
+    daysEl.innerText = addLeadingZero(countDown.days);
+    hoursEl.innerText = addLeadingZero(countDown.hours);
+    minutesEl.innerText = addLeadingZero(countDown.minutes);
+    secondsEl.innerText = addLeadingZero(countDown.seconds);
+  }, 1000);
+  console.log();
 };
 
-const flackpicr = flatpickr('#datetime-picker', options);
-btnStartEl.addEventListener('click', onStart);
+const stopCountdown = () => {
+  clearInterval(intervalId);
+  btnStartEl.removeAttribute('disabled');
+};
+
+btnStartEl.addEventListener('click', startCountdown);
+
+function convertMs(ms) {
+  // Number of milliseconds per unit of time
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  // Remaining days
+  const days = Math.floor(ms / day);
+  // Remaining hours
+  const hours = Math.floor((ms % day) / hour);
+  // Remaining minutes
+  const minutes = Math.floor(((ms % day) % hour) / minute);
+  // Remaining seconds
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+
+  return { days, hours, minutes, seconds };
+}
+
+function addLeadingZero(value) {
+  return value.toString().padStart(2, '0');
+}
