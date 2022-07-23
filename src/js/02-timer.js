@@ -48,10 +48,10 @@ const startCountdown = () => {
       return;
     }
     countDown = convertMs(stopTime - currentTime);
-    daysEl.innerText = addLeadingZero(countDown.days);
-    hoursEl.innerText = addLeadingZero(countDown.hours);
-    minutesEl.innerText = addLeadingZero(countDown.minutes);
-    secondsEl.innerText = addLeadingZero(countDown.seconds);
+    daysEl.textContent = addLeadingZero(countDown.days);
+    hoursEl.textContent = addLeadingZero(countDown.hours);
+    minutesEl.textContent = addLeadingZero(countDown.minutes);
+    secondsEl.textContent = addLeadingZero(countDown.seconds);
   }, 1000);
   console.log();
 };
