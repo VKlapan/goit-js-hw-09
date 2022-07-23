@@ -42,11 +42,11 @@ function getResult(firstDelay, stepDelay, amountPromises) {
 }
 
 function onSuccsess({ position, delay }) {
-  Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+  Notify.success(`Fulfilled promise ${position} in ${delay}ms`);
   //  console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
 }
 
 function onFailure({ position, delay }) {
-  Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+  Notify.failure(`Rejected promise ${position} in ${delay}ms`);
   //  console.log(`❌ Rejected promise ${position} in ${delay}ms`);
 }
