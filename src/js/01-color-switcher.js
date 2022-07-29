@@ -1,3 +1,8 @@
+// As before:
+// - 'use strict';
+// - IIFE
+// - DOM ready
+// - initialize function
 const bodyEl = document.querySelector('body');
 
 const btnStartEl = document.querySelector('button[data-start]');
@@ -9,10 +14,13 @@ btnStopEl.setAttribute('disabled', '');
 let intervalId = null;
 
 const changeBodyColor = () =>
+  // bodyEl.style.backgroundColor = getRandomHexColor();
   bodyEl.setAttribute('style', `background-color : ${getRandomHexColor()}`);
 
 const startSwitcher = () => {
-  //  isActive = true;
+  // isActive = true;
+  // Domain logic and UI should not be mixed
+  // Just disabling button is not enough, as for me
   btnStartEl.setAttribute('disabled', '');
   btnStopEl.removeAttribute('disabled');
   intervalId = setInterval(changeBodyColor, 1000);

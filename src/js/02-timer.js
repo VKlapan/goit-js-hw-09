@@ -1,3 +1,9 @@
+// As before:
+// - 'use strict';
+// - IIFE
+// - DOM ready
+// - initialize function
+
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
@@ -14,6 +20,7 @@ const hoursEl = document.querySelector('[data-hours]');
 const minutesEl = document.querySelector('[data-minutes]');
 const secondsEl = document.querySelector('[data-seconds]');
 
+// Name function after what it is doing, not where it's used
 const onClose = selectedDates => {
   curentDate = new Date();
   selectedDate = selectedDates[0];
@@ -33,14 +40,19 @@ const options = {
   onClose,
 };
 
+// This const is never used
 const flackpicr = flatpickr('#datetime-picker', options);
 
 const startCountdown = () => {
+  // Do not mix business logic with UI
   btnStartEl.setAttribute('disabled', '');
+  // Do you need those LETs?
   let currentTime = null;
   let countDown = null;
   const stopTime = selectedDate.getTime();
 
+  // I think the timer should start imediately, not after a second
+  //  The same with enabling button, it's done a second late
   intervalId = setInterval(() => {
     currentTime = Date.now();
     if (stopTime < currentTime) {
@@ -53,6 +65,7 @@ const startCountdown = () => {
     minutesEl.textContent = addLeadingZero(countDown.minutes);
     secondsEl.textContent = addLeadingZero(countDown.seconds);
   }, 1000);
+  // ?
   console.log();
 };
 
@@ -63,13 +76,16 @@ const stopCountdown = () => {
 
 btnStartEl.addEventListener('click', startCountdown);
 
+// Do not use abriviations
 function convertMs(ms) {
   // Number of milliseconds per unit of time
+  // Those guys could be calculated only once in advance
   const second = 1000;
   const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
 
+  // It could be done simple, ie: calculate difference in hours and then % 60 it
   // Remaining days
   const days = Math.floor(ms / day);
   // Remaining hours
