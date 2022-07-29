@@ -1,9 +1,19 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
+// As before:
+// - 'use strict';
+// - IIFE
+// - DOM ready
+// - initialize function
+
 function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
     const shouldResolve = Math.random() > 0.3;
-
+    // As variant
+    /*
+    const fullfill = Math.random() > 0.3 ? resolve : reject;
+    setTimeout(() => fullfill(position, delay), delay);
+    */
     setTimeout(() => {
       if (shouldResolve) {
         resolve({ position, delay });
@@ -14,6 +24,7 @@ function createPromise(position, delay) {
   });
 }
 
+// Global LETs :'(
 let firstDelay = 0;
 let stepDelay = 0;
 let amountPromises = 0;
@@ -21,6 +32,7 @@ let amountPromises = 0;
 const formEl = document.querySelector('.form');
 formEl.addEventListener('submit', onSubmit);
 
+// Name after what it is doing
 function onSubmit(e) {
   e.preventDefault();
   const {
@@ -31,8 +43,11 @@ function onSubmit(e) {
   amountPromises = Number(amount.value);
   getResult(firstDelay, stepDelay, amountPromises);
   //  console.log(firstDelay, stepDelay, amountPromises);
+  // User values have to be validated. Have you tried negative or float numbers? ;)
 }
 
+// Useless name
+// I might guess there they wanted a chain of properties, WDTF?
 function getResult(firstDelay, stepDelay, amountPromises) {
   for (let i = 0; i < amountPromises; i += 1) {
     createPromise(i + 1, firstDelay + stepDelay * i)
